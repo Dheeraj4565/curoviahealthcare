@@ -60,7 +60,7 @@
       justify-content:space-between;
       gap:16px;
       padding:14px;
-      background:rgba(255,255,255,0.9);
+      background:rgba(255,255,255,0.95);
       border-radius:12px;
       box-shadow:0 6px 18px rgba(2,6,23,0.04);
       margin-bottom:20px;
@@ -82,8 +82,35 @@
     .btn-ghost{background:transparent;border:1px solid rgba(15,23,36,0.06);color:var(--accent-2)}
     .btn-ghost:hover{background:#f1f6ff}
 
-    /* HERO */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:var(--gap);align-items:center;padding:28px 0}
+    /* HERO + watermark */
+    .hero{
+      position:relative;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:var(--gap);
+      align-items:center;
+      padding:28px 0;
+      overflow:visible;
+    }
+
+    /* hero watermark (very soft, hero only) */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image: url("assets/logo.png");
+      background-repeat:no-repeat;
+      background-position:center;
+      background-size:55%;
+      opacity:0.06;       /* very soft */
+      pointer-events:none;
+      z-index:0;
+      filter:grayscale(0.05) saturate(0.8);
+    }
+
+    /* content over watermark */
+    .hero > *{position:relative;z-index:1}
+
     .hero-content h2{font-size:clamp(20px,4.2vw,34px);font-weight:700;color:#002b7a;margin:0 0 12px}
     .tag{display:inline-block;background:#cfe0ff;color:#003ecb;padding:6px 12px;border-radius:999px;font-weight:600;font-size:13px}
     .lead{color:#4d5d73;font-size:16px;margin-top:10px}
@@ -129,6 +156,7 @@
       nav{width:100%;justify-content:flex-end}
       .hero{grid-template-columns:1fr;gap:18px}
       .right-hero{order:2}
+      .hero::before{background-size:70%;opacity:0.045}
     }
 
     @media (max-width:520px){
@@ -139,9 +167,9 @@
       .hero{padding:18px 0}
       .lead{font-size:15px}
       .features{gap:12px}
+      .hero::before{background-size:95%;opacity:0.035}
     }
 
-    /* visually separate container from page edges on very small screens */
     @media (max-width:420px){
       .container{padding:16px}
       body{background:linear-gradient(180deg,#eef5ff 0%, #ffffff 100%)}
@@ -152,7 +180,7 @@
   <div class="container">
     <header class="site-header" role="banner">
       <div class="brand">
-        <!-- make sure the path is relative so preview and domain both work -->
+        <!-- Make sure this file exists at assets/logo.png in the repo -->
         <img src="assets/logo.png" alt="Curovia Healthcare logo" class="logo" />
         <div>
           <h1>Curovia Healthcare</h1>
