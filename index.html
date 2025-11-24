@@ -31,8 +31,8 @@
   <style>
     :root{
       --bg: #e8f1ff;
-      --muted:#6b7380;       /* slightly darker muted */
-      --text:#071428;        /* darker main text */
+      --muted:#6b7380;
+      --text:#071428;
       --accent: #0a4fff;
       --accent-2:#003ecb;
       --card:#ffffff;
@@ -60,22 +60,24 @@
       align-items:center;
       justify-content:space-between;
       gap:16px;
-      padding:14px;
+      padding:12px 16px;
       background:rgba(255,255,255,0.96);
       border-radius:12px;
       box-shadow:0 6px 18px rgba(2,6,23,0.04);
       margin-bottom:20px;
     }
-    .brand{display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:12px}
     .logo{
-      width:72px;height:72px;flex:0 0 72px;border-radius:12px;object-fit:contain;background:#fff;padding:6px;
+      width:64px;height:64px;flex:0 0 64px;border-radius:12px;object-fit:contain;background:#fff;padding:6px;
       box-shadow:0 4px 12px rgba(0,0,0,0.06);
     }
-    .brand h1{font-size:20px;font-weight:700;margin:0;color:var(--accent)}
-    .brand p{margin:0;color:var(--muted);font-size:13px}
+    .brand h1{font-size:18px;font-weight:700;margin:0;color:var(--accent)}
+    .brand p{margin:0;color:var(--muted);font-size:12px}
 
-    /* NAV - responsive */
-    nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    /* NAV */
+    nav{
+      display:flex;align-items:center;gap:12px;
+    }
     .nav-left{display:flex;gap:12px;align-items:center}
     .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;display:inline-block}
     .btn-primary{background:var(--accent);color:#fff}
@@ -83,48 +85,27 @@
     .btn-ghost{background:transparent;border:1px solid rgba(15,23,36,0.06);color:var(--accent-2)}
     .btn-ghost:hover{background:#f1f6ff}
 
-    /* HERO + watermark adjustments */
-    .hero{
-      position:relative;
-      display:grid;
-      grid-template-columns: minmax(320px, 1fr) 360px; /* left wider to show watermark behind cards */
-      gap:var(--gap);
-      align-items:start;
-      padding:28px 0;
-      overflow:visible;
+    /* hamburger button */
+    .hamburger{
+      display:none;
+      background:transparent;border:0;padding:8px;border-radius:8px;
+      cursor:pointer;
     }
+    .hamburger:focus{outline:2px solid rgba(10,79,255,0.15)}
+    .hamburger .bar{display:block;width:22px;height:2px;background:var(--text);margin:4px 0;border-radius:2px;transition:transform .2s ease, opacity .2s ease}
 
-    /* watermark: local preview path first, fallback to assets */
+    /* HERO + watermark */
+    .hero{position:relative;display:grid;grid-template-columns: minmax(320px, 1fr) 360px;gap:var(--gap);align-items:start;padding:28px 0;overflow:visible}
+
     .hero::before{
-      content:"";
-      position:absolute;
-
-      /* place watermark higher and a bit left */
-      top:50px;           /* requested */
-      left:40%;           /* requested */
-      transform:translateX(-40%); /* align to left:40% */
-      
-      width:900px;        /* bounding box width for watermark image */
-      height:420px;       /* bounding box height */
-
-      /* Use uploaded local file for preview, and assets/logo.png when deployed */
-      background-image:
-        url("/mnt/data/logo.png"),
-        url("assets/logo.png");
-
-      background-repeat:no-repeat;
-      background-position:center top;
-      background-size:60%; /* scale */
-      opacity:0.22;        /* STRONG as requested */
-      pointer-events:none;
-      z-index:0;
-      filter:grayscale(0.02) saturate(0.9);
+      content:"";position:absolute;top:50px;left:40%;transform:translateX(-40%);width:900px;height:420px;
+      background-image: url('/mnt/data/logo.png'), url('assets/logo.png');
+      background-repeat:no-repeat;background-position:center top;background-size:60%;opacity:0.22;pointer-events:none;z-index:0;filter:grayscale(0.02) saturate(0.9);
     }
 
-    /* content sits above watermark */
     .hero > *{position:relative;z-index:1}
 
-    /* typography darker for readability */
+    /* typography */
     h1,h2,h3,h4{color:var(--text)}
     p, li, .muted{color:var(--muted)}
 
@@ -132,108 +113,77 @@
     .tag{display:inline-block;background:#cfe0ff;color:#003ecb;padding:6px 12px;border-radius:999px;font-weight:700;font-size:13px}
     .lead{color:var(--muted);font-size:16px;margin-top:10px}
 
-    /* make features responsive using auto-fit */
     .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:22px}
     .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.05);border:1px solid #eef6ff}
     .card h3{margin:0 0 8px;color:var(--text);font-weight:800}
     .card p{margin:0;color:var(--muted);font-size:14px}
 
     .right-hero{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04);border:1px solid #eef6ff}
-    .pill{padding:6px 10px;border-radius:999px;background:#eef6ff;border:1px solid #d7e9ff;font-size:13px;color:#003ecb;font-weight:700}
+    .pill{padding:6px 10px;border-radius:999px;background:#eef4ff;border:1px solid #d7e9ff;font-size:13px;color:#003ecb;font-weight:700}
 
-    /* sections and layout */
     section{padding:36px 0;border-top:1px solid #e9f0ff}
     h2{color:var(--text);font-size:20px;margin:0 0 10px}
-    .muted{color:var(--muted)}
 
     .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:16px}
-
     .contact-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 8px 28px rgba(2,6,23,0.04);border:1px solid #eef6ff}
     form label{display:block;font-weight:700;font-size:14px;margin-bottom:6px;color:var(--text)}
     input,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e2ecff;font-size:15px;margin-bottom:10px}
     textarea{min-height:120px}
 
-    /* footer */
     footer{padding:26px 0;color:var(--muted);text-align:center;margin-top:30px;font-size:14px}
 
-    /* small helpers */
     img{max-width:100%;height:auto;display:block}
-    .center{max-width:1200px;margin:0 auto}
-    .muted a{color:var(--accent-2);text-decoration:none}
 
-    /* RESPONSIVE ADJUSTMENTS - tuned to keep watermark from overlapping important content */
+    /* RESPONSIVE */
     @media (max-width:1100px){
-      .hero::before{
-        width:700px;
-        height:360px;
-        background-size:62%;
-        top:45px;
-        left:42%;
-        transform:translateX(-42%);
-        opacity:0.20;
-      }
+      .hero::before{width:700px;height:360px;background-size:62%;top:45px;left:42%;transform:translateX(-42%);opacity:0.20}
     }
 
     @media (max-width:980px){
       .hero{grid-template-columns:1fr 360px}
       header.site-header{padding:12px}
       .brand h1{font-size:18px}
-      .hero::before{
-        /* slightly smaller on narrower desktops */
-        width:620px;
-        height:360px;
-        background-size:68%;
-        top:60px;
-        left:50%;
-        transform:translateX(-50%);
-        opacity:0.18;
-      }
+      .hero::before{width:620px;height:360px;background-size:68%;top:60px;left:50%;transform:translateX(-50%);opacity:0.18}
     }
 
+    /* MOBILE: show hamburger, hide normal nav until toggled */
     @media (max-width:820px){
-      header.site-header{flex-direction:column;align-items:flex-start;gap:12px}
-      nav{width:100%;justify-content:flex-end}
-      .hero{grid-template-columns:1fr;gap:18px}
-      .right-hero{order:2}
-      .hero::before{
-        /* center watermark on mobile and make it larger but more subtle */
-        top:260px;
-        left:50%;
-        transform:translateX(-50%);
-        background-size:90%;
-        opacity:0.09;
-        width:100%;
-        height:480px;
+      .hamburger{display:block}
+      nav{position:relative}
+      .nav-left{display:flex;gap:12px;align-items:center}
+
+      /* hide full nav (horizontal) and use slide-down menu */
+      .nav-full{display:none}
+
+      /* slide-down menu panel (hidden by default) */
+      .nav-panel{
+        position:absolute;right:0;top:64px; /* below header */
+        background:var(--card);border-radius:10px;padding:12px;box-shadow:0 12px 36px rgba(2,6,23,0.12);
+        display:none;flex-direction:column;gap:8px;min-width:180px;z-index:50;border:1px solid #eef6ff
       }
+      .nav-panel a{display:block;padding:10px 12px;border-radius:8px}
     }
 
     @media (max-width:520px){
       .logo{width:56px;height:56px}
       .brand h1{font-size:16px}
-      nav{justify-content:flex-start;gap:8px}
+      nav{gap:8px}
       .btn{padding:8px 10px;font-size:14px}
       .hero{padding:18px 0}
       .lead{font-size:15px}
       .features{gap:12px}
-      .hero::before{
-        top:320px;
-        background-size:120%;
-        opacity:0.06;
-        height:520px;
-      }
+      .hero::before{top:320px;background-size:120%;opacity:0.06;height:520px}
     }
 
-    @media (max-width:420px){
-      .container{padding:16px}
-      body{background:linear-gradient(180deg,#eef5ff 0%, #ffffff 100%)}
-    }
+    /* small visual helpers */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
   </style>
 </head>
 <body>
   <div class="container">
     <header class="site-header" role="banner">
       <div class="brand">
-        <!-- Visible header logo (ensure assets/logo.png exists in repo) -->
         <img src="assets/logo.png" alt="Curovia Healthcare logo" class="logo" />
         <div>
           <h1>Curovia Healthcare</h1>
@@ -241,13 +191,29 @@
         </div>
       </div>
 
+      <!-- Hamburger for small screens -->
+      <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
       <nav role="navigation" aria-label="Main navigation">
-        <div class="nav-left">
+        <!-- normal horizontal nav (visible on desktop/tablet) -->
+        <div class="nav-full" id="navFull">
           <a class="btn btn-ghost" href="#about">About</a>
           <a class="btn btn-ghost" href="#products">Products</a>
           <a class="btn btn-ghost" href="#contact">Contact</a>
+          <a class="btn btn-primary" href="#contact">Get in touch</a>
         </div>
-        <a class="btn btn-primary" href="#contact">Get in touch</a>
+
+        <!-- slide-down panel (for mobile) -->
+        <div class="nav-panel" id="mobile-nav" role="menu" aria-hidden="true">
+          <a class="btn btn-ghost" href="#about" role="menuitem">About</a>
+          <a class="btn btn-ghost" href="#products" role="menuitem">Products</a>
+          <a class="btn btn-ghost" href="#contact" role="menuitem">Contact</a>
+          <a class="btn btn-primary" href="#contact" role="menuitem">Get in touch</a>
+        </div>
       </nav>
     </header>
 
@@ -388,6 +354,54 @@
   </div>
 
   <script>
+    // hamburger toggle
+    (function(){
+      var ham = document.getElementById('hamburger');
+      var panel = document.getElementById('mobile-nav');
+      var navFull = document.getElementById('navFull');
+
+      ham.addEventListener('click', function(){
+        var expanded = ham.getAttribute('aria-expanded') === 'true';
+        ham.setAttribute('aria-expanded', String(!expanded));
+        if(!expanded){
+          // open
+          panel.style.display = 'flex';
+          panel.setAttribute('aria-hidden', 'false');
+          ham.setAttribute('aria-label','Close navigation');
+        } else {
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden', 'true');
+          ham.setAttribute('aria-label','Open navigation');
+        }
+      });
+
+      // close when clicking outside
+      document.addEventListener('click', function(e){
+        if(!panel) return;
+        if(ham.contains(e.target) || panel.contains(e.target)) return;
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden','true');
+        ham.setAttribute('aria-expanded','false');
+        ham.setAttribute('aria-label','Open navigation');
+      });
+
+      // set initial state based on viewport
+      function resizeHandler(){
+        if(window.innerWidth > 820){
+          panel.style.display = 'none';
+          panel.setAttribute('aria-hidden','true');
+          ham.setAttribute('aria-expanded','false');
+          // show desktop nav
+          navFull.style.display = 'flex';
+        } else {
+          // hide desktop nav on small screens
+          navFull.style.display = 'none';
+        }
+      }
+      window.addEventListener('resize', resizeHandler);
+      resizeHandler();
+    })();
+
     // set copyright year
     document.getElementById('year').textContent = new Date().getFullYear();
 
