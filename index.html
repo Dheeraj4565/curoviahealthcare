@@ -70,6 +70,8 @@
       border-radius:12px;
       box-shadow:0 6px 18px rgba(2,6,23,0.04);
       margin-bottom:20px;
+      position:relative; /* make header the positioned ancestor for nav-panel */
+      z-index:100; /* ensure header sits above watermark */
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{
@@ -80,8 +82,7 @@
     .brand p{margin:0;color:var(--muted);font-size:12px}
 
     /* NAV */
-    nav{display:flex;align-items:center;gap:12px;}
-
+    nav{display:flex;align-items:center;gap:12px;position:relative} /* positioned ancestor too */
     .nav-full{display:flex;gap:10px;align-items:center}
     .nav-panel{display:none} /* mobile panel controlled by JS */
 
@@ -147,8 +148,21 @@
     .card h3{margin:0 0 8px;color:var(--text);font-weight:800}
     .card p{margin:0;color:var(--muted);font-size:14px}
 
-    .right-hero{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04);border:1px solid #eef6ff}
+    .right-hero{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04);border:1px solid #eef6ff;min-width:0}
     .pill{padding:6px 10px;border-radius:999px;background:#eef4ff;border:1px solid #d7e9ff;font-size:13px;color:#003ecb;font-weight:700}
+
+    /* Fix: ensure children can shrink and not force overflow */
+    .right-hero, .right-hero * { min-width: 0; box-sizing: border-box; }
+
+    /* Top row inside right-hero should be flexible/wrap */
+    .right-hero .right-top {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .right-hero .right-top .stats { min-width:0; text-align:right; flex:0 0 auto; }
 
     section{padding:36px 0;border-top:1px solid #e9f0ff}
     h2{color:var(--text);font-size:20px;margin:0 0 10px}
@@ -254,7 +268,7 @@
         flex-direction:column;
         gap:8px;
         min-width:160px;
-        z-index:50;
+        z-index:9999;
         border:1px solid #eef6ff;
       }
       .nav-panel a{display:block;padding:10px 12px;border-radius:8px}
@@ -279,6 +293,11 @@
         background-size:120%;
         opacity:var(--wm-opacity-xs);
       }
+
+      /* when stacked, ensure right-top row wraps sensibly */
+      .right-hero .right-top { justify-content:flex-start; }
+      .right-hero .right-top .stats { text-align:left; width:100%; order:2; margin-top:8px; }
+      .right-hero { padding:14px; }
     }
 
     /* tiny screens */
@@ -362,13 +381,13 @@
         </div>
 
         <aside class="right-hero" aria-label="Brand highlights">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+          <div class="right-top" style="margin-bottom:12px;">
             <div>
               <div class="pill">Mission</div>
               <h3 style="margin:8px 0 4px">Path to Care</h3>
               <p class="muted" style="margin:0">Making advanced and dependable healthcare accessible to all.</p>
             </div>
-            <div style="text-align:right;min-width:80px">
+            <div class="stats" style="text-align:right;">
               <div style="font-weight:700;font-size:20px">25+</div>
               <div class="muted" style="font-size:13px">Therapeutic segments</div>
             </div>
