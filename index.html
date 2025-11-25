@@ -70,8 +70,8 @@
       border-radius:12px;
       box-shadow:0 6px 18px rgba(2,6,23,0.04);
       margin-bottom:20px;
-      position:relative; /* make header the positioned ancestor for nav-panel */
-      z-index:100; /* ensure header sits above watermark */
+      position:relative; /* positioned ancestor for dropdown */
+      z-index:100; /* above watermark */
     }
     .brand{display:flex;align-items:center;gap:12px}
     .logo{
@@ -82,9 +82,9 @@
     .brand p{margin:0;color:var(--muted);font-size:12px}
 
     /* NAV */
-    nav{display:flex;align-items:center;gap:12px;position:relative} /* positioned ancestor too */
+    nav{display:flex;align-items:center;gap:12px;position:relative}
     .nav-full{display:flex;gap:10px;align-items:center}
-    .nav-panel{display:none} /* mobile panel controlled by JS */
+    .nav-panel{display:none} /* toggled by JS */
 
     .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;display:inline-block}
     .btn-primary{background:var(--accent);color:#fff}
@@ -92,7 +92,7 @@
     .btn-ghost{background:transparent;border:1px solid rgba(15,23,36,0.06);color:var(--accent-2)}
     .btn-ghost:hover{background:#f1f6ff}
 
-    /* hamburger button */
+    /* hamburger */
     .hamburger{
       display:none;
       background:transparent;border:0;padding:8px;border-radius:8px;
@@ -105,18 +105,16 @@
     .hero{
       position:relative;
       display:grid;
-      grid-template-columns: minmax(320px, 1fr) 360px; /* left wider to show watermark behind cards */
+      grid-template-columns: minmax(320px, 1fr) 360px;
       gap:var(--gap);
       align-items:start;
       padding:28px 0;
       overflow:visible;
     }
 
-    /* watermark (uses repo asset path) */
     .hero::before{
       content:"";
       position:absolute;
-      /* default desktop placement (large screens) */
       top:50px;
       left:40%;
       transform:translateX(-40%);
@@ -132,10 +130,8 @@
       filter:grayscale(0.02) saturate(0.95);
     }
 
-    /* content sits above watermark */
     .hero > *{position:relative;z-index:1}
 
-    /* typography darker for readability */
     h1,h2,h3,h4{color:var(--text)}
     p, li, .muted{color:var(--muted)}
 
@@ -151,10 +147,9 @@
     .right-hero{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04);border:1px solid #eef6ff;min-width:0}
     .pill{padding:6px 10px;border-radius:999px;background:#eef4ff;border:1px solid #d7e9ff;font-size:13px;color:#003ecb;font-weight:700}
 
-    /* Fix: ensure children can shrink and not force overflow */
+    /* Ensure children can shrink to prevent overflow */
     .right-hero, .right-hero * { min-width: 0; box-sizing: border-box; }
 
-    /* Top row inside right-hero should be flexible/wrap */
     .right-hero .right-top {
       display:flex;
       justify-content:space-between;
@@ -178,9 +173,8 @@
 
     img{max-width:100%;height:auto;display:block}
 
-    /* RESPONSIVE ADJUSTMENTS (fine-tuned watermark positioning & scaling) */
+    /* RESPONSIVE watermark positioning & scaling */
 
-    /* Extra-large desktops */
     @media (min-width:1600px){
       .hero::before{
         left:42%;
@@ -192,7 +186,6 @@
       }
     }
 
-    /* large desktops / laptops */
     @media (min-width:1200px) and (max-width:1599px){
       .hero::before{
         left:41%;
@@ -204,7 +197,6 @@
       }
     }
 
-    /* medium screens */
     @media (min-width:980px) and (max-width:1199px){
       .hero{grid-template-columns:1fr 340px}
       .hero::before{
@@ -217,7 +209,6 @@
       }
     }
 
-    /* tablet / small laptop and below */
     @media (max-width:979px){
       .hero{grid-template-columns:1fr 360px}
       .hero::before{
@@ -231,20 +222,14 @@
       }
     }
 
-    /* mobile - stack content vertically, move watermark down and center */
     @media (max-width:820px){
-      /* show hamburger and hide desktop nav */
       .hamburger{display:block}
       .nav-full{display:none}
-
-      /* mobile slide panel handled by JS; ensure header stays compact */
       header.site-header{padding:10px 12px}
 
-      /* stack hero into single column so right-hero flows under content */
       .hero{grid-template-columns:1fr;gap:16px}
       .right-hero{width:100%;max-width:760px;box-sizing:border-box}
 
-      /* move watermark lower and make subtle */
       .hero::before{
         top:220px;
         left:50%;
@@ -255,9 +240,8 @@
         opacity:var(--wm-opacity-sm);
       }
 
-      /* mobile nav panel styling (JS toggled) */
       .nav-panel{
-        position:absolute;
+        position:absolute !important;
         right:12px;
         top:calc(100% + 8px);
         background:var(--card);
@@ -274,7 +258,6 @@
       .nav-panel a{display:block;padding:10px 12px;border-radius:8px}
     }
 
-    /* small phones */
     @media (max-width:520px){
       .logo{width:56px;height:56px}
       .brand h1{font-size:16px}
@@ -283,7 +266,6 @@
       .lead{font-size:15px}
       .features{gap:12px}
 
-      /* make watermark faint and further down so header + hero are clear */
       .hero::before{
         top:320px;
         left:50%;
@@ -294,13 +276,11 @@
         opacity:var(--wm-opacity-xs);
       }
 
-      /* when stacked, ensure right-top row wraps sensibly */
       .right-hero .right-top { justify-content:flex-start; }
       .right-hero .right-top .stats { text-align:left; width:100%; order:2; margin-top:8px; }
       .right-hero { padding:14px; }
     }
 
-    /* tiny screens */
     @media (max-width:400px){
       .hero::before{
         top:360px;
@@ -315,7 +295,6 @@
       .pill{font-size:12px}
     }
 
-    /* small helper for screen readers */
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
   </style>
 </head>
@@ -446,27 +425,26 @@
         <div>
           <h2>Contact & Enquiries</h2>
           <div class="wrap" style="margin-top:12px">
+
             <div class="contact-card">
               <h3>Get in touch</h3>
-              <p class="muted">For product information, sales or partnerships, contact us — we aim to respond within 1–2 business days.</p>
+              <p class="muted">
+                For product information, sales, supply, or partnerships, please contact us directly.
+                This website does not send automated emails — kindly email us manually.
+              </p>
 
-              <form id="contactForm">
-                <label for="name">Name</label>
-                <input id="name" name="name" required placeholder="Your name" />
+              <div style="margin-top:16px;">
+                <h4 style="margin:0 0 8px">Email Us</h4>
+                <p style="margin:0 0 14px;font-weight:600;">
+                  <a href="mailto:curoviahealthcare@gmail.com" style="color:#003ecb;text-decoration:none;">
+                    curoviahealthcare@gmail.com
+                  </a>
+                </p>
 
-                <label for="email" style="margin-top:10px">Email</label>
-                <input id="email" name="email" type="email" required placeholder="curoviahealthcare@gmail.com" />
-
-                <label for="message" style="margin-top:10px">Message</label>
-                <textarea id="message" name="message" placeholder="Tell us how we can help"></textarea>
-
-                <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-                  <button type="submit" class="btn btn-primary">Send message</button>
-                  <button type="reset" class="btn btn-ghost">Reset</button>
-                </div>
-
-                <p id="formStatus" class="muted" style="margin-top:12px;display:none"></p>
-              </form>
+                <a class="btn btn-primary" href="mailto:curoviahealthcare@gmail.com">
+                  Click to Email Us
+                </a>
+              </div>
             </div>
 
             <div>
@@ -480,6 +458,7 @@
                 <p class="muted"><a href="#about">About</a> · <a href="#products">Products</a> · <a href="#contact">Contact</a></p>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -546,18 +525,6 @@
 
     // set copyright year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // simple form handler (no backend) - replace with real endpoint later
-    document.getElementById('contactForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      var status = document.getElementById('formStatus');
-      status.style.display = 'block';
-      status.textContent = 'Sending...';
-      setTimeout(function(){
-        status.textContent = 'Thank you — your message has been received. We will contact you soon.';
-        document.getElementById('contactForm').reset();
-      }, 900);
-    });
 
     // smooth scroll for in-page anchors
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
